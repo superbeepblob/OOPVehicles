@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
@@ -16,7 +17,64 @@ using System.Windows.Shapes;
 
 namespace OOPVehicles
 {
+    public class Vehicle
+    {
+        public string Model;
+        public int Year;
+        public string RegistrationNumber;
 
+        public Vehicle(string model, int year, string registrationNumber) 
+        {
+            Model = model;
+            Year = year;
+            RegistrationNumber = registrationNumber;
+        }
+    }
+    public class Bus : Vehicle 
+    {
+        public double Capacity;
+        public Bus(string model, int year, string registrationNumber, double capacity) : base(model, year, registrationNumber) 
+        {
+            Capacity = capacity;
+        }
+    }
+    public class Car : Vehicle 
+    {
+        public int NumberOfDoors;
+        public Car(string model, int year, string registrationNumber, int numberOfDoors) : base(model, year, registrationNumber)
+        {
+            NumberOfDoors = numberOfDoors;
+        }
+    }
+    public class Motorcycle : Vehicle
+    {
+        public double MotorCapacity; 
+        public Motorcycle(string model, int year, string registrationNumber,double motorCapacity) : base(model, year, registrationNumber) 
+        {
+            MotorCapacity = motorCapacity; 
+        }
+    }
+    public class VehicleShop
+    {
+        public List<Vehicle> VehicleList = new List<Vehicle>();
+
+        public void AddVehicle(Vehicle vehicle)
+        {
+            VehicleList.Add(vehicle);
+        }
+        public void SaveToFile(string path)
+        {
+            if (!File.Exists(path)) 
+            {
+                var f = File.CreateText(path);
+                f.Close();
+            }
+        }
+        public void ShowVehicleList()
+        {
+            VehicleList.Reverse();
+        }
+    }
     public partial class MainWindow : Window
     {
         private VehicleShop vehicleShop;
@@ -62,7 +120,7 @@ namespace OOPVehicles
             lbVehicleList.Items.Clear();
             foreach (var vehicle in vehicleShop.VehicleList)
             {
-                lbVehicleList.Items.Add(vehicle.ToVehicleString());
+                lbVehicleList.Items.Add(vehicle.ToString());
             }
         }
 
